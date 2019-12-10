@@ -4,7 +4,7 @@ PREFIX ?= usr/local
 DESTDIR ?= /
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 union-find: union-find/union-find.o
 all: union-find
