@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
       qf_union(id, s, p, q);
       printf("connected %d to %d\n", p, q);
     } else if (strcmp(cmd, "check\n") == 0) {
-      printf("%d\n", qf_connected(id, 1, 2));
+      printf("%d\n", qf_find(id, 1, 2));
     } else if (strcmp(cmd, "print\n") == 0) {
       for (size_t i = 0; i < s; i++) {
         printf("index %lu => %d\n", i, id[i]);
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-bool qf_connected(uint8_t *id, uint8_t p, uint8_t q) {
+bool qf_find(uint8_t *id, uint8_t p, uint8_t q) {
   return id[p] == id[q];
 }
 
