@@ -3,11 +3,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include "union-find.h"
+#include "quick-union.h"
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    printf("Usage: union-find <size>\n");
+    printf("Usage: quick-union <size>\n");
     return 1;
   }
 
@@ -20,16 +20,15 @@ int main(int argc, char **argv) {
   }
 
   char cmd[25];
+  int8_t p, q;
   while(fgets(cmd, sizeof(cmd), stdin)) {
     if(strcmp(cmd, "connect\n") == 0) {
-      int8_t p, q;
-      char input[10];
-      fgets(input, sizeof(input), stdin);
-      sscanf(input, "%hhd %hhd", &p, &q);
-      qf_union(id, s, p, q);
+      read_pair(&p, &q);
+      qu_union(id, p, q);
       printf("connected %d to %d\n", p, q);
     } else if (strcmp(cmd, "check\n") == 0) {
-      printf("%d\n", qf_connected(id, 1, 2));
+      read_pair(&p, &q);
+      printf("%d\n", qu_connected(id, p, q));
     } else if (strcmp(cmd, "print\n") == 0) {
       for (size_t i = 0; i < s; i++) {
         printf("index %lu => %d\n", i, id[i]);
@@ -40,19 +39,25 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-bool qf_connected(uint8_t *id, uint8_t p, uint8_t q) {
-  return id[p] == id[q];
+void read_pair(int8_t *p, int8_t *q) {
+  char input[10];
+
+  fgets(input, sizeof(input), stdin);
+  sscanf(input, "%hhd %hhd", p, q);
 }
 
-void qf_union(uint8_t *id, size_t size, uint8_t p, uint8_t q) {
-  // pid and qid are necessary because id[p] and id[q] may change
-  // during union
-  uint8_t pid = id[p];
-  uint8_t qid = id[q];
-
-  for (size_t i = 0; i < size; i++) {
-    if (id[i] == pid) {
-      id[i] = qid;
-    }
+uint8_t qu_root(uint8_t *id, uint8_t i) {
+  while(id[i] != i) {
+    i = id[i];
   }
+
+  return i;
+}
+
+bool qu_connected(uint8_t *id, uint8_t p, uint8_t q) {
+  return id[qu_root(id, p)] == id[qu_root(id, q)];
+}
+
+void qu_union(uint8_t *id, uint8_t p, uint8_t q) {
+  id[qu_root(id, p)] = id[qu_root(id, q)];
 }
