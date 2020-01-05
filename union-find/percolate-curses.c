@@ -1,6 +1,6 @@
+#include <stdlib.h>
 #include <curses.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <time.h>
@@ -21,7 +21,6 @@ bool qu_find(uint16_t *qu, uint16_t p, uint16_t q) {
 }
 
 void qu_union(uint16_t *qu, uint16_t *size, uint8_t p, uint8_t q) {
-  fprintf(stderr, "union %hhu, %hhu\n", p, q);
   int i = qu_root(qu, p);
   int j = qu_root(qu, q);
 
@@ -98,14 +97,13 @@ int main(void) {
     }
   }
 
-  WINDOW *window = newwin(height, width, 0, 0);
+  newwin(height, width, 0, 0);
   init_pair(1, COLOR_BLACK, COLOR_WHITE);
   attron(COLOR_PAIR(1));
 
   for (int y = 0; y <= height - 1; y++) {
     for (int x = 0; x <= width - 1; x++) {
       move(y, x);
-      fprintf(stderr, "%i %i\n", x, y);
       if (!grid[x][y]) {
         printw(" ");
       }
@@ -121,7 +119,7 @@ int main(void) {
   }
   refresh();
 
-  int ch = getch();
+  getch();
   endwin();
 
   return 0;

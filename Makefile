@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -O2 -std=c99 -lncurses -ltinfo
+CFLAGS=-Wall -O2 -std=gnu99 -lncurses -ltinfo
 PREFIX ?= usr/local
 DESTDIR ?= /
 
