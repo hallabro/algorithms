@@ -9,7 +9,7 @@
 #define QU_VIRTUAL_TOP_REL_IDX    2
 #define QU_VIRTUAL_BOTTOM_REL_IDX 1
 
-uint8_t qu_root(uint16_t *qu, uint16_t i) {
+uint16_t qu_root(uint16_t *qu, uint16_t i) {
   while(qu[i] != i) {
     qu[i] = qu[qu[i]]; // one pass path compression by letting every
                        // other node point to it's grandparent
@@ -23,7 +23,7 @@ bool qu_find(uint16_t *qu, uint16_t p, uint16_t q) {
   return qu[qu_root(qu, p)] == qu[qu_root(qu, q)];
 }
 
-void qu_union(uint16_t *qu, uint16_t *size, uint8_t p, uint8_t q) {
+void qu_union(uint16_t *qu, uint16_t *size, uint16_t p, uint16_t q) {
   int i = qu_root(qu, p);
   int j = qu_root(qu, q);
 
@@ -64,14 +64,16 @@ int main(void) {
   start_color();
   curs_set(0);
 
-  int height = 4, width = 4;
-  //getmaxyx(stdscr, height, width);
+  int height, width;
+  getmaxyx(stdscr, height, width);
 
   uint16_t size = height * width;
   bool grid[width][height];
-  double probability = 0.5;
-  uint16_t qu[size];
-  uint16_t qu_size[size];
+
+  // probability that a cell is blocking
+  double probability = 0.3f;
+  uint16_t qu[size + QU_VIRTUAL_TOP_REL_IDX];
+  uint16_t qu_size[size + QU_VIRTUAL_TOP_REL_IDX];
 
   qu_init(qu, qu_size, size);
 
@@ -112,7 +114,7 @@ int main(void) {
     }
   }
 
-  move(50, 50);
+  move(10, 10);
 
   if (qu_find(qu, size + 2, size + 1)) {
     printw("percolates");
