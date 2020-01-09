@@ -6,6 +6,9 @@
 #include <time.h>
 #include <limits.h>
 
+#define QU_VIRTUAL_TOP_REL_IDX    2
+#define QU_VIRTUAL_BOTTOM_REL_IDX 1
+
 uint8_t qu_root(uint16_t *qu, uint16_t i) {
   while(qu[i] != i) {
     qu[i] = qu[qu[i]]; // one pass path compression by letting every
@@ -47,11 +50,10 @@ void qu_init(uint16_t* qu, uint16_t* qu_size, uint16_t size) {
     qu_size[i] = 0;
   }
 
-  qu[size + 2] = size + 2;
-  qu_size[size + 2] = size + 2;
-
-  qu[size + 1] = size + 1;
-  qu_size[size + 1] = size + 1;
+  qu[size + QU_VIRTUAL_TOP_REL_IDX] = size + QU_VIRTUAL_TOP_REL_IDX;
+  qu[size + QU_VIRTUAL_BOTTOM_REL_IDX] = size + QU_VIRTUAL_BOTTOM_REL_IDX;
+  qu_size[size + QU_VIRTUAL_TOP_REL_IDX] = size + QU_VIRTUAL_TOP_REL_IDX;
+  qu_size[size + QU_VIRTUAL_BOTTOM_REL_IDX] = size + QU_VIRTUAL_BOTTOM_REL_IDX;
 }
 
 int main(void) {
