@@ -7,7 +7,8 @@ DESTDIR ?= /
 	$(CC) $(CFLAGS) $< -o $@
 
 union-find: union-find/quick-union.o union-find/quick-find.o union-find/percolate-curses
-all: union-find
+stack: stack/stack.c
+all: union-find stack
 
 install: all
 	install -d $(DESTDIR)/$(PREFIX)/bin

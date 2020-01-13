@@ -1,3 +1,4 @@
 *.o
 bin/
 union-find/percolate-curses
+stack/stack
