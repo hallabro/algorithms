@@ -18,7 +18,16 @@ bool stack_is_empty(const stack* s) {
   return s->top <= 0;
 }
 
+bool stack_is_full(const stack* s) {
+  return s->top == STACK_SIZE - 1;
+}
+
 void stack_push(stack *s, uint8_t data) {
+  if (stack_is_full(s)) {
+    printf("stack is full and can not be pushed");
+    return;
+  }
+
   s->content[s->top++] = data;
 }
 
